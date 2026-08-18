@@ -80,7 +80,9 @@ img { max-width: 100%; display: block; }
   background: #fff; border-right: 1px solid var(--border);
   display: flex; flex-direction: column;
   padding: 32px 18px 24px; overflow-y: auto;
+  transform: translateX(-100%); transition: transform .25s ease;
 }
+.sidebar.open { transform: none; box-shadow: var(--card-shadow-lg); }
 .sidebar-brand { margin-bottom: 26px; padding: 0 10px; }
 .brand { font-size: 22px; font-weight: 800; letter-spacing: -.3px; }
 .brand::before { content: "🍃 "; }
@@ -95,14 +97,19 @@ img { max-width: 100%; display: block; }
 .sidebar-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
 .sidebar-actions .btn { width: 100%; }
 
-.main { margin-left: 260px; }
+.main { margin-left: 0; transition: margin-left .25s ease; }
+body.sb-open .main { margin-left: 260px; }
 
 .menu-toggle {
-  display: none; position: fixed; top: 14px; left: 14px; z-index: 140;
+  position: fixed; top: 14px; left: 14px; z-index: 150;
   width: 44px; height: 44px; border-radius: 12px; background: #fff;
   border: 1px solid var(--border); box-shadow: var(--card-shadow);
-  font-size: 20px; cursor: pointer; color: var(--text);
+  font-size: 20px; cursor: grab; color: var(--text);
+  user-select: none; display: flex; align-items: center; justify-content: center;
+  touch-action: none;
 }
+.menu-toggle:hover { box-shadow: var(--card-shadow-lg); color: var(--primary); }
+.menu-toggle:active { cursor: grabbing; }
 .sidebar-overlay { position: fixed; inset: 0; z-index: 120; background: rgba(15,23,42,.4); }
 
 /* ===== Hero ===== */
@@ -451,7 +458,8 @@ body.editing .avatar-edit-hint { display: block; }
   .sidebar { transform: translateX(-100%); transition: transform .25s ease; width: 272px; }
   .sidebar.open { transform: none; box-shadow: var(--card-shadow-lg); }
   .main { margin-left: 0; }
-  .menu-toggle { display: block; }
+  body.sb-open .main { margin-left: 0; }
+  .menu-toggle { cursor: pointer; }
 }
 @media (max-width: 768px) {
   .section { padding: 60px 0; }
