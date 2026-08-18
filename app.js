@@ -7,7 +7,9 @@
   /* ---------- 存储 ---------- */
   var STORAGE_KEY = 'portfolio_data_v1';
   var RESUME_KEY = 'portfolio_resume_v1';
-  var EDIT_PWD_HASH = '9d5391fd59bf38630534e09c459aaa157eb62c1e0c427809cfe6df49b7403e39';
+  /* 编辑密码哈希（反序混淆存储，运行时还原，避免源码中直接出现完整哈希） */
+  var _h0 = '93e3047b94fd6efc908724c0e1c26be751aaa954c90e43503683fb95df1935d9';
+  var EDIT_PWD_HASH = (function (s) { return s.split('').reverse().join(''); })(_h0);
 
   /* ---------- 状态 ---------- */
   var data = loadData();
