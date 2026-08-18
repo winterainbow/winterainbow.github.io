@@ -642,19 +642,74 @@
       b.addEventListener('click', downloadResume);
     });
 
-    // 移动端菜单
-    $('#menuToggle').addEventListener('click', function () {
-      var open = $('#sidebar').classList.toggle('open');
-      $('#sidebarOverlay').hidden = !open;
-    });
+    // 悬浮导航开关（桌面端可拖动，点击打开/收起左侧导航）
+    var navToggle = $('#menuToggle');
+    var FLOAT_KEY = 'portfolio_float_pos';
+    function isDesktop() { return window.matchMedia('(min-width: 901px)').matches; }
+
+    function toggleSidebar(force) {
+      var sb = $('#sidebar');
+      var open = force !== undefined ? force : !sb.classList.contains('open');
+      sb.classList.toggle('open', open);
+      if (isDesktop()) {
+        document.body.classList.toggle('sb-open', open);
+      } else {
+        $('#sidebarOverlay').hidden = !open;
+      }
+    }
+
+    if (navToggle) {
+      try {
+        var fSaved = JSON.parse(localStorage.getItem(FLOAT_KEY) || 'null');
+        if (fSaved) {
+          navToggle.style.left = fSaved.left + 'px';
+          navToggle.style.top = fSaved.top + 'px';
+        }
+      } catch (e) {}
+      var suppressClick = false;
+      navToggle.addEventListener('click', function () {
+        if (suppressClick) { suppressClick = false; return; }
+        toggleSidebar();
+      });
+      navToggle.addEventListener('pointerdown', function (e) {
+        e.preventDefault();
+        var startX = e.clientX, startY = e.clientY;
+        var rect = navToggle.getBoundingClientRect();
+        var sLeft = rect.left, sTop = rect.top;
+        var maxL = Math.max(0, window.innerWidth - rect.width);
+        var maxT = Math.max(0, window.innerHeight - rect.height);
+        var moved = false;
+        function onMove(ev) {
+          var nl = Math.min(Math.max(0, sLeft + ev.clientX - startX), maxL);
+          var nt = Math.min(Math.max(0, sTop + ev.clientY - startY), maxT);
+          if (Math.abs(ev.clientX - startX) + Math.abs(ev.clientY - startY) > 5) moved = true;
+          navToggle.style.left = nl + 'px';
+          navToggle.style.top = nt + 'px';
+        }
+        function onUp() {
+          window.removeEventListener('pointermove', onMove);
+          window.removeEventListener('pointerup', onUp);
+          if (moved) {
+            suppressClick = true;
+            try {
+              localStorage.setItem(FLOAT_KEY, JSON.stringify({
+                left: parseInt(navToggle.style.left, 10) || 0,
+                top: parseInt(navToggle.style.top, 10) || 0
+              }));
+            } catch (e) {}
+          }
+        }
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp);
+      });
+    }
+
     $('#sidebarOverlay').addEventListener('click', function () {
-      $('#sidebar').classList.remove('open');
-      this.hidden = true;
+      toggleSidebar(false);
     });
     $all('.sidebar-nav a').forEach(function (a) {
       a.addEventListener('click', function () {
-        $('#sidebar').classList.remove('open');
-        $('#sidebarOverlay').hidden = true;
+        toggleSidebar(false);
       });
     });
   }
