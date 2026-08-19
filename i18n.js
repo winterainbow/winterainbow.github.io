@@ -63,7 +63,7 @@ window.DATA_EN = {
   "profile": {
     "name": "Zhendong Zhang",
     "headline": "Embedded Software Engineer",
-    "tagline": "22 y/o · B.Eng. Guangdong Polytechnic Normal University · Seeking: Electronics Engineer / Embedded Software / MCU Development",
+    "tagline": "22 y/o · B.Eng. Guangdong Polytechnic Normal University\nSeeking: Electronics Engineer / Embedded Software / MCU Development",
     "location": "Guangdong, China",
     "email": "2099057954@qq.com",
     "phone": "15347609303",
