@@ -2,7 +2,7 @@
  * sw.js —— Service Worker（PWA 离线缓存）
  * 策略：缓存优先 + 后台更新（首次在线时缓存核心资源）
  * ============================================================ */
-var CACHE = 'portfolio-v1';
+var CACHE = 'portfolio-v2';
 var ASSETS = [
   './',
   './index.html',

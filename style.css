@@ -153,9 +153,9 @@ body.editing .avatar-box::after {
 .hero-headline {
   display: inline-block; margin-top: 6px; font-size: 20px; font-weight: 600; color: var(--primary);
 }
-.hero-tagline { margin: 16px auto 0; max-width: 560px; color: var(--text-2); white-space: pre; font-size: clamp(12px, 2.3vw, 16px); line-height: 1.6; }
+.hero-tagline { margin: 16px auto 0; max-width: 560px; color: var(--text-2); white-space: pre-wrap; overflow-wrap: break-word; word-break: break-word; font-size: clamp(12px, 2.3vw, 16px); line-height: 1.7; }
 .hero-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-top: 20px; color: var(--text-3); font-size: 14px; }
-.hero-meta span { display: inline-flex; align-items: center; gap: 5px; }
+.hero-meta span { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; overflow-wrap: break-word; word-break: break-all; }
 .hero-cta { display: flex; justify-content: center; gap: 14px; margin-top: 30px; }
 
 /* ===== 卡片 ===== */
@@ -463,11 +463,40 @@ body.editing .avatar-edit-hint { display: block; }
 }
 @media (max-width: 768px) {
   .section { padding: 60px 0; }
-  .hero { padding: 70px 0 60px; }
-  .hero-name { font-size: 34px; }
+  .hero { padding: 70px 0 56px; }
+  .hero-name { font-size: 32px; }
+  .hero-headline { font-size: 17px; }
+  .hero-tagline { font-size: 13px; max-width: 100%; }
+  .hero-meta { gap: 10px 14px; font-size: 13px; }
+  .section-title { font-size: 26px; }
+  .card { padding: 24px 20px; }
   .skills-grid, .projects-grid, .contact-grid { grid-template-columns: 1fr; }
   .personal-row { flex-direction: column; gap: 10px; }
   .edit-toolbar { width: calc(100% - 32px); border-radius: 16px; }
+  .edit-toolbar-inner { flex-wrap: wrap; justify-content: center; }
+  .edit-toolbar-actions { flex-wrap: wrap; justify-content: center; }
+}
+@media (max-width: 480px) {
+  .hero { padding: 48px 0 40px; }
+  .avatar-box { width: 100px; height: 100px; margin-bottom: 18px; }
+  .hero-name { font-size: 27px; }
+  .hero-headline { font-size: 15px; margin-top: 4px; }
+  .hero-tagline { font-size: 12.5px; margin-top: 12px; }
+  .hero-meta { flex-direction: column; gap: 8px; }
+  .hero-cta { flex-direction: column; gap: 10px; margin-top: 22px; }
+  .hero-cta .btn { width: 100%; }
+  .section { padding: 44px 0; }
+  .section-title { font-size: 23px; }
+  .section-sub { font-size: 13.5px; }
+  .card { padding: 20px 16px; border-radius: 14px; }
+  .btn { padding: 10px 16px; font-size: 14px; }
+  .msg-actions { flex-direction: column; }
+  .msg-actions .btn { width: 100%; }
+  .edit-toolbar { width: calc(100% - 24px); }
+  .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
+  .leaf-1 { font-size: 38px; }
+  .leaf-2 { font-size: 28px; }
+  .leaf-3 { font-size: 26px; }
 }
 
 /* ===== 语言切换 ===== */
