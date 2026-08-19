@@ -5,7 +5,8 @@
   'use strict';
 
   /* ---------- 存储 ---------- */
-  var STORAGE_KEY = 'portfolio_data_v1';
+  /* 存储 key 按语言区分，避免中英文数据互相覆盖 */
+  var STORAGE_KEY = 'portfolio_data_v1_' + (window.getLang ? window.getLang() : 'zh');
   var RESUME_KEY = 'portfolio_resume_v1';
   /* 编辑密码哈希（反序混淆存储，运行时还原，避免源码中直接出现完整哈希） */
   var _h0 = '93e3047b94fd6efc908724c0e1c26be751aaa954c90e43503683fb95df1935d9';
@@ -34,16 +35,46 @@
         localStorage.removeItem(STORAGE_KEY);
       }
     } catch (e) {}
-    var fresh = JSON.parse(JSON.stringify(window.DEFAULT_DATA));
+    var fresh = JSON.parse(JSON.stringify(getDefaultData()));
     fresh._ver = curVer;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh)); } catch (e) {}
     return fresh;
   }
 
+  // 按当前语言返回默认数据源（zh→DEFAULT_DATA，en→DATA_EN）
+  function getDefaultData() {
+    var lang = window.getLang ? window.getLang() : 'zh';
+    return (lang === 'en' && window.DATA_EN) ? window.DATA_EN : window.DEFAULT_DATA;
+  }
+
+  // 应用 UI 文案（导航/按钮/标题等 data-i18n 元素）
+  function applyUI() {
+    var lang = window.getLang ? window.getLang() : 'zh';
+    var t = (window.I18N_UI && window.I18N_UI[lang]) || {};
+    $all('[data-i18n]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      if (!t[k]) return;
+      var tag = el.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') el.setAttribute('placeholder', t[k]);
+      else el.textContent = t[k];
+    });
+    document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+    document.title = lang === 'en'
+      ? 'Zhendong Zhang - Embedded Software Engineer'
+      : '张振东 - 嵌入式软件工程师 | 个人主页';
+  }
+
+  // 读取当前语言 UI 文案
+  function uiText(key) {
+    var lang = window.getLang ? window.getLang() : 'zh';
+    var t = (window.I18N_UI && window.I18N_UI[lang]) || {};
+    return t[key] || key;
+  }
+
   // 兼容旧数据：personal 项缺 level 时按名称推断级别；education 合并默认数据中的新增项（按 school 去重）；tagline 等由默认数据维护的字段以默认数据为准
   function upgradeData(d) {
     if (!d || typeof d !== 'object') return;
-    var def = window.DEFAULT_DATA;
+    var def = getDefaultData();
     // profile 中由默认数据维护的字段，以默认数据为准（用户通过导出/导入流程管理内容）
     if (def && def.profile && d.profile) {
       ['tagline', 'jobTitle'].forEach(function (k) {
@@ -193,7 +224,10 @@
   /* ---------- 渲染 ---------- */
   function render() {
     var p = data.profile;
-    document.title = p.name + ' · ' + p.headline;
+    var lang = window.getLang ? window.getLang() : 'zh';
+    document.title = lang === 'en'
+      ? (p.name + ' · ' + p.headline)
+      : (p.name + ' - ' + p.headline + ' | 个人主页');
 
     // 导航品牌
     $('.brand').textContent = p.name;
@@ -302,10 +336,10 @@
 
     // 联系
     var contacts = [
-      { label: '邮箱', icon: '📧', field: 'profile.email', link: function (v) { return 'mailto:' + v; } },
-      { label: '电话', icon: '📞', field: 'profile.phone', link: null },
-      { label: '所在地', icon: '📍', field: 'profile.location', link: null },
-      { label: '求职意向', icon: '🎯', field: 'profile.jobTitle', link: null }
+      { label: uiText('contactEmail'), icon: '📧', field: 'profile.email', link: function (v) { return 'mailto:' + v; } },
+      { label: uiText('contactPhone'), icon: '📞', field: 'profile.phone', link: null },
+      { label: uiText('contactLoc'), icon: '📍', field: 'profile.location', link: null },
+      { label: uiText('contactIntent'), icon: '🎯', field: 'profile.jobTitle', link: null }
     ];
     $('#contactBox').innerHTML = contacts.map(function (c) {
       var val = getPath(c.field);
@@ -352,11 +386,45 @@
     if (footName) footName.textContent = p.name;
     if (footHead) footHead.textContent = p.headline;
 
+    // 技术文章
+    renderArticles();
+
     applyEditMode();
   }
 
+  // 技术文章渲染（卡片 + 展开阅读）
+  function renderArticles() {
+    var box = $('#articlesBox');
+    if (!box) return;
+    var list = (data && data.articles) || [];
+    if (!list.length) { box.innerHTML = ''; return; }
+    var expand = uiText('articleExpand');
+    var collapse = uiText('articleCollapse');
+    box.innerHTML = list.map(function (a) {
+      return '<article class="article-card">' +
+        '<h3 class="article-title">' + esc(a.title) + '</h3>' +
+        '<div class="article-meta">' + esc(a.date || '') + '</div>' +
+        '<p class="article-summary">' + esc(a.summary || '') + '</p>' +
+        '<div class="article-content" hidden>' + (a.content || '') + '</div>' +
+        '<button class="btn btn-sm btn-outline article-toggle" data-expanded="0">' + expand + '</button>' +
+      '</article>';
+    }).join('');
+    $all('.article-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var card = btn.parentElement;
+        var content = card.querySelector('.article-content');
+        var expanded = btn.getAttribute('data-expanded') === '1';
+        if (content) content.hidden = expanded;
+        btn.setAttribute('data-expanded', expanded ? '0' : '1');
+        btn.textContent = expanded ? uiText('articleExpand') : uiText('articleCollapse');
+      });
+    });
+  }
+
   /* ---------- 个人项目卡片（级别可自行输入，按级别分组） ---------- */
-  var LEVEL_OPTIONS = ['国家级', '省级', '市级', '校级', '其他'];
+  var LEVEL_OPTIONS = (window.getLang && window.getLang() === 'en')
+    ? ['National', 'Provincial', 'City', 'University', 'Other']
+    : ['国家级', '省级', '市级', '校级', '其他'];
   function personalCard(it, i) {
     var f = it.file;
     var fileRowHtml = '';
@@ -629,7 +697,7 @@
     $('#resetBtn').addEventListener('click', function () {
       if (!confirm('确定恢复默认内容吗？你已编辑的内容将被清除。')) return;
       localStorage.removeItem(STORAGE_KEY);
-      data = JSON.parse(JSON.stringify(window.DEFAULT_DATA));
+      data = JSON.parse(JSON.stringify(getDefaultData()));
       saveData();
       render();
     });
@@ -712,6 +780,65 @@
         toggleSidebar(false);
       });
     });
+
+    // 语言切换（切后刷新页面，重新按语言加载数据与文案）
+    var langBtn = $('#langToggle');
+    if (langBtn) langBtn.addEventListener('click', function () {
+      var cur = (window.getLang ? window.getLang() : 'zh');
+      if (window.setLang) window.setLang(cur === 'zh' ? 'en' : 'zh');
+      location.reload();
+    });
+
+    // 留言表单：提交后调起邮件客户端（mailto），收件人自动填好
+    var msgForm = $('#msgForm');
+    if (msgForm) msgForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = ($('#msgName') ? $('#msgName').value : '').trim();
+      var body = ($('#msgBody') ? $('#msgBody').value : '').trim();
+      var email = (data && data.profile && data.profile.email) || '';
+      if (!email || !body) return;
+      var subject = encodeURIComponent(uiText('msgMailSubject') + (name ? '（' + name + '）' : ''));
+      var text = encodeURIComponent(body + '\n\n—— ' + (name || '匿名访客'));
+      window.location.href = 'mailto:' + email + '?subject=' + subject + '&body=' + text;
+    });
+
+    // 复制邮箱
+    var copyBtn = document.querySelector('[data-action="copyEmail"]');
+    if (copyBtn) copyBtn.addEventListener('click', function () {
+      var email = (data && data.profile && data.profile.email) || '';
+      if (!email) return;
+      function done() {
+        var ok = $('#msgOk');
+        if (ok) {
+          ok.hidden = false;
+          ok.textContent = uiText('copyOk');
+          setTimeout(function () { ok.hidden = true; }, 2000);
+        }
+      }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = email;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (err) {}
+        document.body.removeChild(ta);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(done, fallback);
+      } else fallback();
+    });
+
+    // 返回顶部
+    var backTop = $('#backTop');
+    if (backTop) {
+      backTop.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      window.addEventListener('scroll', function () {
+        var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+        backTop.classList.toggle('show', y > 400);
+      }, { passive: true });
+    }
   }
 
   function updateSkillBar(numEl) {
@@ -858,6 +985,7 @@
 
   /* ---------- 初始化 ---------- */
   function init() {
+    applyUI();
     bindEvents();
     render();
     addResumeUpload();

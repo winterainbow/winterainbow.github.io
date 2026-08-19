@@ -13,6 +13,9 @@
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://winterainbow.github.io/">
 <link rel="icon" type="image/jpeg" href="avatar.jpg">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e293b">
 <!-- Open Graph（微信/QQ/外链分享卡片） -->
 <meta property="og:type" content="profile">
 <meta property="og:title" content="张振东 - 嵌入式软件工程师 | 个人主页">
@@ -54,7 +57,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="style.css?v=22">
+<link rel="stylesheet" href="style.css?v=23">
 </head>
 <body>
 
@@ -65,18 +68,20 @@
       <div class="brand-sub" data-field="profile.headline">嵌入式软件工程师</div>
     </div>
     <nav class="sidebar-nav" id="navLinks">
-      <a href="#home">🏠 首页</a>
-      <a href="#about">👤 关于我</a>
-      <a href="#skills">🛠 技能</a>
-      <a href="#experience">💼 经历</a>
-      <a href="#projects">📁 项目作品</a>
-      <a href="#education">🎓 教育</a>
-      <a href="#contact">✉️ 联系</a>
-      <a href="#personal">🏆 荣誉奖项</a>
+      <a href="#home"><span aria-hidden="true">🏠</span> <span data-i18n="navHome">首页</span></a>
+      <a href="#about"><span aria-hidden="true">👤</span> <span data-i18n="navAbout">关于我</span></a>
+      <a href="#skills"><span aria-hidden="true">🛠</span> <span data-i18n="navSkills">技能</span></a>
+      <a href="#experience"><span aria-hidden="true">💼</span> <span data-i18n="navExp">经历</span></a>
+      <a href="#projects"><span aria-hidden="true">📁</span> <span data-i18n="navProjects">项目作品</span></a>
+      <a href="#articles"><span aria-hidden="true">📝</span> <span data-i18n="navArticles">文章</span></a>
+      <a href="#education"><span aria-hidden="true">🎓</span> <span data-i18n="navEdu">教育</span></a>
+      <a href="#contact"><span aria-hidden="true">✉️</span> <span data-i18n="navContact">联系</span></a>
+      <a href="#personal"><span aria-hidden="true">🏆</span> <span data-i18n="navHonors">荣誉奖项</span></a>
     </nav>
     <div class="sidebar-actions">
-      <button class="btn btn-primary btn-block" data-action="resume">📄 下载简历</button>
-      <button class="btn btn-ghost btn-block" id="editBtn">✏️ 编辑</button>
+      <button class="btn btn-ghost btn-block lang-toggle" id="langToggle" data-i18n="langName" title="切换语言">EN</button>
+      <button class="btn btn-primary btn-block" data-action="resume"><span aria-hidden="true">📄</span> <span data-i18n="btnResume">下载简历</span></button>
+      <button class="btn btn-ghost btn-block" id="editBtn"><span aria-hidden="true">✏️</span> <span data-i18n="btnEdit">编辑</span></button>
     </div>
   </aside>
 
@@ -93,7 +98,7 @@
       <span class="leaf leaf-3">🍀</span>
       <div class="hero-inner">
         <div class="avatar-box" id="avatarBox" title="点击更换头像">
-          <img id="avatarImg" alt="头像" />
+          <img id="avatarImg" alt="avatar" />
           <span class="avatar-placeholder" id="avatarPlaceholder">头像</span>
         </div>
         <h1 class="hero-name" data-field="profile.name">张振东</h1>
@@ -101,8 +106,8 @@
         <p class="hero-tagline" data-field="profile.tagline">22岁 · 广东技术师范大学本科 · 求职方向：电子工程师 / 嵌入式软件 / MCU 开发</p>
         <div class="hero-meta" id="heroMeta"></div>
         <div class="hero-cta">
-          <button class="btn btn-primary" data-action="resume">📄 下载简历</button>
-          <a class="btn btn-outline" href="#contact">✉️ 联系我</a>
+          <button class="btn btn-primary" data-action="resume"><span aria-hidden="true">📄</span> <span data-i18n="btnResume">下载简历</span></button>
+          <a class="btn btn-outline" href="#contact"><span aria-hidden="true">✉️</span> <span data-i18n="btnContact">联系我</span></a>
         </div>
       </div>
     </section>
@@ -110,7 +115,7 @@
     <!-- 关于我 -->
     <section class="section" id="about">
       <div class="container">
-        <h2 class="section-title">关于我</h2>
+        <h2 class="section-title" data-i18n="secAbout">关于我</h2>
         <div class="card" id="aboutBox"></div>
       </div>
     </section>
@@ -118,7 +123,7 @@
     <!-- 技能 -->
     <section class="section section-alt" id="skills">
       <div class="container">
-        <h2 class="section-title">专业技能</h2>
+        <h2 class="section-title" data-i18n="secSkills">专业技能</h2>
         <div class="card" id="skillsBox"></div>
       </div>
     </section>
@@ -126,7 +131,7 @@
     <!-- 工作经历 -->
     <section class="section" id="experience">
       <div class="container">
-        <h2 class="section-title">工作经历</h2>
+        <h2 class="section-title" data-i18n="secExp">工作经历</h2>
         <div class="timeline" id="experienceBox"></div>
       </div>
     </section>
@@ -134,7 +139,7 @@
     <!-- 项目作品 -->
     <section class="section section-alt" id="projects">
       <div class="container">
-        <h2 class="section-title">项目作品</h2>
+        <h2 class="section-title" data-i18n="secProjects">项目作品</h2>
         <div class="projects-grid" id="projectsBox"></div>
       </div>
     </section>
@@ -142,7 +147,7 @@
     <!-- 教育 -->
     <section class="section" id="education">
       <div class="container">
-        <h2 class="section-title">教育背景</h2>
+        <h2 class="section-title" data-i18n="secEdu">教育背景</h2>
         <div class="timeline" id="educationBox"></div>
       </div>
     </section>
@@ -150,50 +155,80 @@
     <!-- 联系 -->
     <section class="section section-alt" id="contact">
       <div class="container">
-        <h2 class="section-title">联系方式</h2>
+        <h2 class="section-title" data-i18n="secContact">联系方式</h2>
         <div class="contact-grid" id="contactBox"></div>
+        <div class="card msg-card" id="msgCard">
+          <h3 class="msg-title" data-i18n="msgTitle">给我留言</h3>
+          <p class="msg-hint" data-i18n="msgHint">提交后将调起您的邮件客户端，收件人已自动填好。也可直接复制邮箱发送。</p>
+          <form id="msgForm" autocomplete="off">
+            <input type="text" id="msgName" data-i18n="msgName" placeholder="您的称呼" required maxlength="30">
+            <textarea id="msgBody" data-i18n="msgMsg" placeholder="留言内容" rows="4" required maxlength="1000"></textarea>
+            <div class="msg-actions">
+              <button class="btn btn-primary" type="submit"><span aria-hidden="true">✉️</span> <span data-i18n="msgSend">发送邮件</span></button>
+              <button class="btn btn-ghost" type="button" data-action="copyEmail"><span aria-hidden="true">📋</span> <span data-i18n="copyEmail">复制邮箱</span></button>
+            </div>
+            <p class="msg-ok" id="msgOk" hidden></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 技术文章 -->
+    <section class="section" id="articles">
+      <div class="container">
+        <h2 class="section-title" data-i18n="secArticles">技术文章</h2>
+        <p class="section-sub" data-i18n="articlesSub">嵌入式开发笔记 · 持续更新</p>
+        <div class="articles-grid" id="articlesBox"></div>
       </div>
     </section>
 
     <!-- 荣誉奖项 -->
-    <section class="section" id="personal">
+    <section class="section section-alt" id="personal">
       <div class="container">
-        <h2 class="section-title">荣誉奖项</h2>
-        <p class="section-sub">竞赛获奖 · 资格证书</p>
+        <h2 class="section-title" data-i18n="secHonors">荣誉奖项</h2>
+        <p class="section-sub" data-i18n="honorsSub">竞赛获奖 · 资格证书</p>
         <div class="personal-grid" id="personalBox"></div>
       </div>
     </section>
 
     <!-- 页脚 -->
     <footer class="footer">
-      <div class="container footer-inner">
-        <div class="footer-left">
-          <span data-field="profile.name">张振东</span> · <span data-field="profile.headline">嵌入式软件工程师</span>
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-left">
+            <span data-field="profile.name">张振东</span> · <span data-field="profile.headline">嵌入式软件工程师</span>
+          </div>
+          <div class="footer-right">
+            <span id="footerYear"></span>
+          </div>
         </div>
-        <div class="footer-right">
-          <span id="footerYear"></span>
+        <div class="footer-stats">
+          <span data-i18n="sitePv">本站访问量</span> <span id="busuanzi_value_site_pv"></span>
+          <span data-i18n="siteUv">访客数</span> <span id="busuanzi_value_site_uv"></span>
         </div>
       </div>
     </footer>
 
   </main>
 
+  <button class="back-top" id="backTop" title="返回顶部" aria-label="返回顶部">↑</button>
+
   <!-- ===== 编辑密码弹窗 ===== -->
   <div class="modal-mask" id="editPwdModal" hidden>
     <div class="modal">
       <button class="modal-close" data-close="editPwdModal" aria-label="关闭">×</button>
-      <h3 class="modal-title">进入编辑模式</h3>
-      <p class="modal-sub">请输入密码</p>
+      <h3 class="modal-title" data-i18n="editTitle">进入编辑模式</h3>
+      <p class="modal-sub" data-i18n="editSub">请输入密码</p>
       <form id="editPwdForm" autocomplete="off">
         <label class="field">
-          <span>密码</span>
+          <span data-i18n="editPwd">密码</span>
           <div class="pwd-wrap">
-            <input type="password" id="editPwd" placeholder="请输入密码" required>
+            <input type="password" id="editPwd" data-i18n="editPwd" placeholder="请输入密码" required>
             <button type="button" class="pwd-toggle" id="editPwdToggle" aria-label="显示/隐藏密码">👁</button>
           </div>
         </label>
         <div class="login-error" id="editPwdError"></div>
-        <button type="submit" class="btn btn-primary btn-block">进入编辑</button>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="editBtn">进入编辑</button>
       </form>
     </div>
   </div>
@@ -201,21 +236,31 @@
   <!-- ===== 编辑模式工具栏 ===== -->
   <div class="edit-toolbar" id="editToolbar" hidden>
     <div class="edit-toolbar-inner">
-      <span class="edit-badge">🛠 编辑模式</span>
+      <span class="edit-badge"><span aria-hidden="true">🛠</span> <span data-i18n="editMode">编辑模式</span></span>
       <div class="edit-toolbar-actions">
-        <button class="btn btn-sm btn-outline" id="previewBtn">👁 预览</button>
-        <button class="btn btn-sm btn-outline" id="exportBtn">导出数据</button>
-        <button class="btn btn-sm btn-outline" id="importBtn">导入数据</button>
+        <button class="btn btn-sm btn-outline" id="previewBtn"><span aria-hidden="true">👁</span> <span data-i18n="preview">预览</span></button>
+        <button class="btn btn-sm btn-outline" id="exportBtn" data-i18n="exportData">导出数据</button>
+        <button class="btn btn-sm btn-outline" id="importBtn" data-i18n="importData">导入数据</button>
         <input type="file" id="importFile" accept=".json" hidden>
-        <button class="btn btn-sm btn-outline" id="resetBtn">恢复默认</button>
-        <button class="btn btn-sm btn-ghost" id="logoutBtn">退出编辑</button>
+        <button class="btn btn-sm btn-outline" id="resetBtn" data-i18n="resetDefault">恢复默认</button>
+        <button class="btn btn-sm btn-ghost" id="logoutBtn" data-i18n="logout">退出编辑</button>
       </div>
     </div>
   </div>
 
-  <div class="edit-tip" id="editTip" hidden>💡 编辑模式：点击文字可直接修改，列表可删除 / 添加条目，改完点「导出数据」发给我更新线上版本</div>
+  <div class="edit-tip" id="editTip" hidden>💡 <span data-i18n="editTip">编辑模式：点击文字可直接修改，列表可删除 / 添加条目，改完点「导出数据」发给我更新线上版本</span></div>
 
-  <script src="data.js?v=22"></script>
-  <script src="app.js?v=22"></script>
+  <script src="data.js?v=23"></script>
+  <script src="i18n.js?v=23"></script>
+  <script src="app.js?v=23"></script>
+  <script>
+    /* PWA：注册 Service Worker（离线缓存） */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () {});
+      });
+    }
+  </script>
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
