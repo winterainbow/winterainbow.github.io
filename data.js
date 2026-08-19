@@ -13,7 +13,7 @@ window.DEFAULT_DATA = {
   "profile": {
     "name": "张振东",
     "headline": "嵌入式软件工程师",
-    "tagline": "22岁     广东技术师范大学(本科)     求职方向：电子工程师 / 嵌入式软件 / MCU 开发",
+    "tagline": "22岁 · 广东技术师范大学（本科） · 求职方向：电子工程师 / 嵌入式软件 / MCU 开发",
     "location": "广东",
     "email": "2099057954@qq.com",
     "phone": "15347609303",
