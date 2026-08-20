@@ -69,6 +69,8 @@ img { max-width: 100%; display: block; }
 .btn-outline:hover { background: rgba(62,155,90,.06); }
 .btn-ghost { color: var(--text-2); background: transparent; }
 .btn-ghost:hover { color: var(--text); background: rgba(15,23,42,.05); }
+.btn-stats { opacity: .35; font-size: 13px; padding: 6px; border: none; transition: opacity .15s ease; }
+.btn-stats:hover { opacity: .95; background: transparent; }
 .btn-sm { padding: 8px 16px; font-size: 13px; }
 .btn-block { width: 100%; }
 .link-btn { background: none; border: none; color: var(--primary); cursor: pointer; font-family: inherit; font-size: inherit; }
