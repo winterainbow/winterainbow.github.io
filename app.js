@@ -687,6 +687,33 @@
       setEditing(true);
     });
 
+    // 隐藏入口「?」：密码验证后打开统计后台(伪装,复用编辑密码)
+    $('#statsBtn').addEventListener('click', function () {
+      $('#statsPwdModal').hidden = false;
+      setTimeout(function () { $('#statsPwd').focus(); }, 50);
+    });
+    $('[data-close="statsPwdModal"]').addEventListener('click', function () { $('#statsPwdModal').hidden = true; });
+    $('#statsPwdModal').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
+    $('#statsPwdToggle').addEventListener('click', function () {
+      var pwd = $('#statsPwd');
+      var show = pwd.type === 'text';
+      pwd.type = show ? 'password' : 'text';
+      this.textContent = show ? '👁' : '🙈';
+    });
+    $('#statsPwdForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var p = $('#statsPwd').value;
+      var err = $('#statsPwdError');
+      if (sha256(p) !== EDIT_PWD_HASH) {
+        err.textContent = '密码错误';
+        return;
+      }
+      err.textContent = '';
+      $('#statsPwdModal').hidden = true;
+      $('#statsPwd').value = '';
+      window.open('https://tongji.baidu.com', '_blank');
+    });
+
     // 工具栏
     $('#logoutBtn').addEventListener('click', function () {
       setEditing(false);
